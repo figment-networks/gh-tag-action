@@ -1,0 +1,25 @@
+name: 'GitHub Tag'
+description: 'Bump and push git tag'
+inputs:
+  default-bump:
+    description: "Which type of bump to use when none explicitly provided (default: `minor`)."
+    default: 'minor'
+outputs:
+  new_version:
+    description: "Generated tag"
+    value: ${{ steps.next-version.outputs.next-version }}
+runs:
+  using: "composite"
+  steps:
+    - run: git pull --tags
+      shell: bash
+    - id: next-version
+      run: echo "::set-output name=next-version::$(${{ github.action_path }}/nextVersion.sh ${{ inputs.default-bump }})"
+      shell: bash
+    - run: |
+        version="${{ steps.next-version.outputs.next-version }}"
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git tag -am "Auto-tagged version '$version'" "$version"
+        git push origin "$version"
+      shell: bash
