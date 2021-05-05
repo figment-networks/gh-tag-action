@@ -5,7 +5,7 @@ inputs:
     description: "Which type of bump to use when none explicitly provided (default: `minor`)."
     default: 'minor'
 outputs:
-  new_version:
+  new-version:
     description: "Generated tag"
     value: ${{ steps.next-version.outputs.next-version }}
 runs:
