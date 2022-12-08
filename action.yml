@@ -14,7 +14,7 @@ runs:
     - run: git pull --tags
       shell: bash
     - id: next-version
-      run: echo "::set-output name=next-version::$(${{ github.action_path }}/nextVersion.sh ${{ inputs.default-bump }})"
+      run: echo "next-version=$(${{ github.action_path }}/nextVersion.sh ${{ inputs.default-bump }})" >> $GITHUB_OUTPUT
       shell: bash
     - run: |
         version="${{ steps.next-version.outputs.next-version }}"
